@@ -1,0 +1,24 @@
+<html lang="">
+  <head>
+  </head>
+  <body>
+    <p>HELLO</p>
+    <p id='demo'></p>
+
+    <script src="https://unpkg.com/mqtt@3.0.0/dist/mqtt.min.js"></script>
+    <script>
+            var client = mqtt.connect('ws://localhost:1884') // you add a ws:// url here
+            var doc = document.getElementById("demo");
+            client.subscribe("mqtt/demo")
+          
+            client.on("message", function (topic, payload) {
+              console.log("Got message");
+              var json = JSON.parse(payload);
+              var curr_time = new Date().getTime();
+              doc.innerHTML = (curr_time - json.timestamp) + " ms";
+              //client.end()
+            })
+          </script>
+  </body>
+
+  </html>
