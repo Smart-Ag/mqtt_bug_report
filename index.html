@@ -7,9 +7,10 @@
 
     <script src="https://unpkg.com/mqtt@3.0.0/dist/mqtt.min.js"></script>
     <script>
-            var client = mqtt.connect('ws://localhost:1884') // you add a ws:// url here
+            var options = {wsOptions: { perMessageDeflate: false, binaryType: 'fragments' }};
+            var client = mqtt.connect('ws://localhost:1884', ) // you add a ws:// url here
             var doc = document.getElementById("demo");
-            client.subscribe("mqtt/demo")
+            client.subscribe("mqtt/demo", options)
           
             client.on("message", function (topic, payload) {
               console.log("Got message");
