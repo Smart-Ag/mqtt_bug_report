@@ -13,10 +13,12 @@ def got_msg(client, userdata, msg):
 client = mqtt.Client()
 print('client is', client)
 client.on_message = got_msg
-client.connect('127.0.0.1', port=1883, keepalive=60)
+client.connect('127.0.0.1', port=8889, keepalive=60)
+#client.connect('127.0.0.1', port=1883, keepalive=60)
 client.loop_start()
 
 cache = '0' * (1024**2)
+
 
 print("size of string: ", str(utf8len(cache)))
 

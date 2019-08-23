@@ -1,0 +1,48 @@
+<html lang="">
+  <head>
+  </head>
+  <body>
+    <p>HELLO</p>
+    <p id='demo'></p>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/paho-mqtt/1.0.1/mqttws31.js" type="text/javascript"></script>
+    <script>
+
+            var client = new Paho.MQTT.Client("localhost", Number(8083), "clientId");
+            var doc = document.getElementById("demo");
+
+            // called when the client connects
+            function onConnect() {
+              // Once a connection has been made, make a subscription and send a message.
+              console.log("onConnect");
+              client.subscribe("mqtt/demo");
+              console.log("subscribed");
+            }
+
+            // called when the client loses its connection
+            function onConnectionLost(responseObject) {
+              if (responseObject.errorCode !== 0) {
+                console.log("onConnectionLost:"+responseObject.errorMessage);
+              }
+            }
+
+            // called when a message arrives
+            function onMessageArrived(message) {
+              console.log("Got msg");
+              var json = JSON.parse(message.payloadString);
+              var curr_time = new Date().getTime();
+              doc.innerHTML = (curr_time - json.timestamp) + " ms";
+            }
+
+
+            // set callback handlers
+            client.onConnectionLost = onConnectionLost;
+            client.onMessageArrived = onMessageArrived;
+
+            // connect the client
+            client.connect({onSuccess:onConnect});
+
+          </script>
+  </body>
+
+  </html>

@@ -1,0 +1,25 @@
+version: "3.1"
+services:
+
+  t:
+    # image: "eclipse-mosquitto:1.6.4"
+    # #image: "amd64/rabbitmq:3.7"
+    # network_mode: "host"
+    # ports:
+    #   - "1883:1883"
+    #   - "1884:1884"
+    # volumes:
+    #   - ./install/mosquitto.conf:/mosquitto/config/mosquitto.conf
+
+    image: "emqx/emqx:latest"
+    #image: "eclipse-mosquitto:1.6.4"
+    network_mode: "host"
+    ports:
+      - "1883:1883"
+      - "1884:1884"
+    #privileged: true
+    environment:
+      - EMQX_LISTENER__TCP__EXTERNAL=1883
+      - EMQX_LISTENER__WS__EXTERNAL=1884
+    # - EMQX_HOST=127.0.0.1
+      - EMQX_MQTT__MAX_PACKET_SIZE=10240KB

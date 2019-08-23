@@ -4,14 +4,34 @@
   <body>
     <p>HELLO</p>
     <p id='demo'></p>
-emqx/emqx
     <script src="https://unpkg.com/mqtt@3.0.0/dist/mqtt.min.js"></script>
     <script>
-            var options = {wsOptions: { perMessageDeflate: false, binaryType: 'fragments' }};
-            var client = mqtt.connect('ws://localhost:1884', ) // you add a ws:// url here
+            const options = {
+                  connectTimeout: 4000,
+
+                  // Authentication
+                  clientId: 'emqx',
+                  // username: 'emqx',
+                  // password: 'emqx',
+
+                  keepalive: 60,
+                  clean: true,
+            }
+
+            // WebSocket connect url
+            const WebSocket_URL = 'ws://localhost:1884/mqtt'
+
+            // TCP/TLS connect url
+
+            const client = mqtt.connect(WebSocket_URL, options)
+
             var doc = document.getElementById("demo");
             client.subscribe("mqtt/demo", options)
-          
+
+            client.on("connect", function(){
+              console.log("Connected");
+            });
+
             client.on("message", function (topic, payload) {
               console.log("Got message");
               var json = JSON.parse(payload);
